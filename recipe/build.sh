@@ -16,6 +16,7 @@ sed -i "/TargetFrameworks Condition/d" src/FsAutoComplete/FsAutoComplete.fsproj
 
 mkdir -p "${PREFIX}/bin"
 mkdir -p "${PREFIX}/libexec/${PKG_NAME}"
+ln -sf ${DOTNET_ROOT}/dotnet ${PREFIX}/bin
 
 # Build package with dotnet publish
 dotnet tool restore
@@ -27,6 +28,7 @@ tee ${PREFIX}/bin/${PKG_NAME} << EOF
 #!/bin/sh
 exec \${DOTNET_ROOT}/dotnet exec \${CONDA_PREFIX}/libexec/fsautocomplete/fsautocomplete.dll "\$@"
 EOF
+chmod +x ${PREFIX}/bin/${PKG_NAME}
 
 tee ${PREFIX}/bin/${PKG_NAME}.cmd << EOF
 call %DOTNET_ROOT%\dotnet exec %CONDA_PREFIX%\libexec\fsautocomplete\fsautocomplete.dll %*

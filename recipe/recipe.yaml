@@ -1,17 +1,17 @@
-{% set name = "fsautocomplete" %}
-{% set version = "0.73.2" %}
+context:
+  version: 0.73.2
 
 package:
-  name: {{ name|lower }}
-  version: {{ version }}
+  name: fsautocomplete
+  version: ${{ version }}
 
 source:
-  git_url: https://github.com/fsharp/{{ name }}
-  git_rev: v{{ version }}
+  git: https://github.com/fsharp/fsautocomplete
+  tag: v${{ version }}
 
 build:
-  noarch: generic
   number: 0
+  noarch: generic
 
 requirements:
   build:
@@ -22,18 +22,19 @@ requirements:
   run:
     - dotnet
 
-test:
-  commands:
-    - fsautocomplete --help
+tests:
+  - script:
+      - fsautocomplete --help
 
 about:
-  home: https://github.com/fsharp/{{ name }}
   license: Apache-2.0
-  license_file: 
+  license_file:
     - LICENSE.md
     - license-files/
   summary: F# language server using Language Server Protocol
+  homepage: https://github.com/fsharp/fsautocomplete
 
 extra:
   recipe-maintainers:
     - danielnachun
+
