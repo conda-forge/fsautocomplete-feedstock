@@ -2,24 +2,17 @@
 
 set -o xtrace -o nounset -o pipefail -o errexit
 
+mkdir -p ${PREFIX}/bin
+mkdir -p ${PREFIX}/libexec/${PKG_NAME}
+ln -sf ${DOTNET_ROOT}/dotnet ${PREFIX}/bin
+
 rm -rf global.json
 framework_version="$(dotnet --version | sed -e 's/\..*//g').0"
 
-# Update System.Text.Json to newest version to fix security warning
-# Remove with next release
-sed -i "s/System.Text.Json (7.0.3)/System.Text.Json (8.0.4)/" paket.lock
-
-# Overwrite hardcoded .NET version
-sed -i "s?<TargetFrameworks>.*</TargetFrameworks>?<TargetFrameworks>net${framework_version}</TargetFrameworks>?" \
-    src/FsAutoComplete/FsAutoComplete.fsproj
-sed -i "/TargetFrameworks Condition/d" src/FsAutoComplete/FsAutoComplete.fsproj
-
-mkdir -p "${PREFIX}/bin"
-mkdir -p "${PREFIX}/libexec/${PKG_NAME}"
-
 # Build package with dotnet publish
 dotnet tool restore
-dotnet publish --no-self-contained src/FsAutoComplete/FsAutoComplete.fsproj --output ${PREFIX}/libexec/${PKG_NAME} --framework net${framework_version}
+dotnet publish --no-self-contained src/FsAutoComplete/FsAutoComplete.fsproj --output ${PREFIX}/libexec/${PKG_NAME} \
+    --framework net${framework_version} -p:TreatWarningsAsErrors=false
 rm -rf ${PREFIX}/libexec/${PKG_NAME}/${PKG_NAME}
 
 # Create bash and batch wrappers
@@ -27,6 +20,7 @@ tee ${PREFIX}/bin/${PKG_NAME} << EOF
 #!/bin/sh
 exec \${DOTNET_ROOT}/dotnet exec \${CONDA_PREFIX}/libexec/fsautocomplete/fsautocomplete.dll "\$@"
 EOF
+chmod +x ${PREFIX}/bin/${PKG_NAME}
 
 tee ${PREFIX}/bin/${PKG_NAME}.cmd << EOF
 call %DOTNET_ROOT%\dotnet exec %CONDA_PREFIX%\libexec\fsautocomplete\fsautocomplete.dll %*
