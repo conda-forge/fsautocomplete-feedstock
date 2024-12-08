@@ -11,12 +11,12 @@ framework_version="$(dotnet --version | sed -e 's/\..*//g').0"
 
 # Update System.Text.Json to newest version to fix security warning
 # Remove with next release
-sed -i "s/System.Text.Json (7.0.3)/System.Text.Json (8.0.4)/" paket.lock
+# sed -i "s/System.Text.Json (7.0.3)/System.Text.Json (8.0.4)/" paket.lock
 
 # Overwrite hardcoded .NET version
-sed -i "s?<TargetFrameworks>.*</TargetFrameworks>?<TargetFrameworks>net${framework_version}</TargetFrameworks>?" \
-    src/FsAutoComplete/FsAutoComplete.fsproj
-sed -i "/TargetFrameworks Condition/d" src/FsAutoComplete/FsAutoComplete.fsproj
+# sed -i "s?<TargetFrameworks>.*</TargetFrameworks>?<TargetFrameworks>net${framework_version}</TargetFrameworks>?" \
+#     src/FsAutoComplete/FsAutoComplete.fsproj
+# sed -i "/TargetFrameworks Condition/d" src/FsAutoComplete/FsAutoComplete.fsproj
 
 # Build package with dotnet publish
 dotnet tool restore
