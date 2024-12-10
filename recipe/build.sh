@@ -31,3 +31,5 @@ tee ignored_packages.json << EOF
 ["FSharp.Control.Reactive", "FSharp.UMX", "FsToolkit.*", "IcedTasks", "Ionide.KeepAChangelog.Tasks", "LinkDotNet.StringBuilder", "Microsoft.DotNet.PlatformAbstractions"]
 EOF
 dotnet-project-licenses --input src/FsAutoComplete/FsAutoComplete.fsproj -t -d license-files -ignore ignored_packages.json
+
+rm ${PREFIX}/bin/dotnet
