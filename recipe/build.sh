@@ -11,6 +11,8 @@ framework_version="$(dotnet --version | sed -e 's/\..*//g').0"
 
 # Build package with dotnet publish
 dotnet tool restore
+sed -i "s?<TargetFrameworks>.*</TargetFrameworks>?<TargetFrameworks>net${framework_version}</TargetFrameworks>?" \
+    src/FsAutoComplete/FsAutoComplete.fsproj
 dotnet publish --no-self-contained src/FsAutoComplete/FsAutoComplete.fsproj --output ${PREFIX}/libexec/${PKG_NAME} \
     --framework net${framework_version} -p:TreatWarningsAsErrors=false
 rm -rf ${PREFIX}/libexec/${PKG_NAME}/${PKG_NAME}
