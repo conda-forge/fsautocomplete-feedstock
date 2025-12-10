@@ -10,6 +10,7 @@ rm -rf global.json
 framework_version="$(dotnet --version | sed -e 's/\..*//g').0"
 
 # Build package with dotnet publish
+cd git
 dotnet tool restore
 sed -i "s?<TargetFrameworks>.*</TargetFrameworks>?<TargetFrameworks>net${framework_version}</TargetFrameworks>?" \
     src/FsAutoComplete/FsAutoComplete.fsproj
@@ -30,7 +31,7 @@ EOF
 
 # Download dependency licenses with dotnet-project-licenses
 tee ignored_packages.json << EOF
-["FSharp.Control.Reactive", "FSharp.UMX", "FsToolkit.*", "IcedTasks", "Ionide.KeepAChangelog.Tasks", "LinkDotNet.StringBuilder", "Microsoft.DotNet.PlatformAbstractions"]
+["FSharp.Control.Reactive", "FSharp.UMX", "FsToolkit.*", "IcedTasks", "Ionide.KeepAChangelog.Tasks", "LinkDotNet.StringBuilder", "Microsoft.DotNet.PlatformAbstractions", "NETStandard.Library"]
 EOF
 dotnet-project-licenses --input src/FsAutoComplete/FsAutoComplete.fsproj -t -d license-files -ignore ignored_packages.json
 
