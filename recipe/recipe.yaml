@@ -1,5 +1,5 @@
 context:
-  version: 0.82.0
+  version: "0.84.0"
 
 package:
   name: fsautocomplete
@@ -10,7 +10,7 @@ source:
     tag: v${{ version }}
     target_directory: git
   - url: https://github.com/ionide/FsAutoComplete/archive/refs/tags/v${{ version }}.tar.gz
-    sha256: f1cca05be6c983a611dc2e23251f646520028610a9509d352e5e2c0dc5d63b77
+    sha256: 8a79ded3bdd9da84663893c33cb44126b80dd68386c711ddc31197538ecc7616
 
 build:
   number: 0
